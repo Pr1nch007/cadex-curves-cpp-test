@@ -18,7 +18,7 @@ public:
 
     virtual Point getPoint(double t) const = 0;
     virtual Vector getDerivative(double t) const = 0;
-protected:
+//protected:
     uint64_t id_;
     std::string name_;
     Point center_;

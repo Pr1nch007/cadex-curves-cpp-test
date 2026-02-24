@@ -13,7 +13,9 @@ int main(int argc, char* argv[]) {
     std::cout << "File to parse: " << argv[1] << "\n";
     return 0;
 }*/
-#include <iostream>
+
+
+/*#include <iostream>
 #include <memory>
 #include <iomanip>  // для std::setprecision
 
@@ -48,6 +50,83 @@ int main() {
     auto d_helix = helix->getDerivative(t);
     std::cout << "Helix Point: (" << p_helix.x << ", " << p_helix.y << ", " << p_helix.z << ")" << std::endl;
     std::cout << "Helix Derivative: (" << d_helix.x << ", " << d_helix.y << ", " << d_helix.z << ")" << std::endl;
+
+    return 0;
+}*/
+
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <memory>
+#include <cmath>
+
+#include "Curve.h"
+#include "Helix.h"
+#include "Circle.h"
+#include "Ellipse.h"
+#include "Parser.h"
+
+int main(int argc, char* argv[])
+{
+    if (argc != 2)
+    {
+        std::cerr << "Usage: " << argv[0] << " <input_file>\n";
+        std::cerr << "Example:\n";
+        std::cerr << "  " << argv[0] << " curves_to_check.txt\n";
+        std::cerr << "  " << argv[0] << " additional_curves_1.txt\n";
+        return 1;
+    }
+
+    const std::string filename = argv[1];
+
+    std::vector<std::shared_ptr<Curve>> curves;
+
+    if (!parseFile(filename, curves))
+    {
+        std::cerr << "Failed to parse file: " << filename << "\n";
+        return 2;
+    }
+
+    std::cout << "\nParsed " << curves.size() << " valid curves from " << filename << "\n\n";
+
+    const double PI = 3.14159265358979323846;
+    const double t = PI / 4.0;
+
+    std::cout << std::fixed << std::setprecision(6);
+    std::cout << "t = π/4 ≈ " << t << "\n";
+    std::cout << "────────────────────────────────────────────────────────────\n";
+
+    for (const auto& curve : curves)
+    {
+        Point  p = curve->getPoint(t);
+        Vector v = curve->getDerivative(t);
+
+        std::cout << "ID   : " << curve->id_ << "\n";
+        std::cout << "Name : " << curve->name_ << "\n";
+
+        std::cout << "Point       : "
+                  << "(" << p.x << ", " << p.y << ", " << p.z << ")\n";
+
+        std::cout << "Derivative  : "
+                  << "(" << v.x << ", " << v.y << ", " << v.z << ")\n";
+
+        std::cout << "────────────────────────────────────────────────────────────\n";
+    }
+
+    size_t n_circle = 0, n_ellipse = 0, n_helix = 0;
+
+    for (const auto& c : curves)
+    {
+        if (std::dynamic_pointer_cast<Circle>(c))  ++n_circle;
+        else if (std::dynamic_pointer_cast<Ellipse>(c)) ++n_ellipse;
+        else if (std::dynamic_pointer_cast<Helix>(c))   ++n_helix;
+    }
+
+    std::cout << "\nSummary:\n";
+    std::cout << "  Circles  : " << n_circle  << "\n";
+    std::cout << "  Ellipses : " << n_ellipse << "\n";
+    std::cout << "  Helixes  : " << n_helix   << "\n";
+    std::cout << "  Total    : " << curves.size() << "\n";
 
     return 0;
 }
