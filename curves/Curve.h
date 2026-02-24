@@ -7,7 +7,7 @@ struct Point {
     double x = 0.0, y = 0.0, z = 0.0;
 };
 
-using Vector = Point;  // семантический алиас
+using Vector = Point;
 
 class Curve {
 public:
@@ -18,7 +18,7 @@ public:
 
     virtual Point getPoint(double t) const = 0;
     virtual Vector getDerivative(double t) const = 0;
-private:
+protected:
     uint64_t id_;
     std::string name_;
     Point center_;

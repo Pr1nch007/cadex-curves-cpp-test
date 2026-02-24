@@ -1,4 +1,8 @@
 #pragma once
+
+#include <cstdint>
+#include <string>
+
 #include "Curve.h"
 
 class Circle : public Curve {
