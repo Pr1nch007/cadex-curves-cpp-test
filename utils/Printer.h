@@ -1,10 +1,10 @@
 #pragma once
 
 #include <memory>
-#include <string>
 #include <vector>
 
 #include "Curve.h"
+#include "Circle.h"
 
 //Выводит информацию обо всех кривых в контейнере
 void printAllCurvesInfo(const std::vector<std::shared_ptr<Curve>>& curves, double t);
