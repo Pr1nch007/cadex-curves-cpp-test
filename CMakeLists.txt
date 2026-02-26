@@ -12,6 +12,7 @@ add_executable(curves_app
     curves/Helix.cpp
     utils/Parser.cpp
     utils/Printer.cpp
+    utils/RandomGenerator.cpp
 )
 
 target_include_directories(curves_app PRIVATE
