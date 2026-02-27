@@ -92,6 +92,11 @@ bool parseFile(const std::string& path, std::vector<std::shared_ptr<Curve>>& cur
         return false;
     }
 
+    if (numCurves <= 0) {
+        std::cerr << "Warning: Number of curves is non-positive (" << numCurves << "). No curves to process.\n";
+        return true;
+    }
+
     std::string dummyLine;
     std::getline(file, dummyLine);
 
@@ -106,6 +111,11 @@ bool parseFile(const std::string& path, std::vector<std::shared_ptr<Curve>>& cur
         if (parseCurveLine(line, curve)) {
             curves.push_back(curve);
         }
+    }
+
+    std::string extraLine;
+    if (std::getline(file, extraLine)) {
+        std::cerr << "Warning: Extra lines found after expected " << numCurves << " curves. Ignoring them.\n";
     }
 
     return true;
